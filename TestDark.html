@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dark Mode Example</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    /* Custom dark mode styles */
+    body.dark-mode {
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+    
+    .dark-mode .card {
+      background-color: #2d2d2d;
+      color: #e0e0e0;
+      border-color: #444;
+    }
+    
+    .dark-mode .navbar {
+      background-color: #1e1e1e !important;
+    }
+    
+    .dark-mode .text-dark {
+      color: #e0e0e0 !important;
+    }
+    
+    .dark-mode .bg-light {
+      background-color: #2d2d2d !important;
+      color: #e0e0e0;
+    }
+    
+    .dark-mode-toggle {
+      cursor: pointer;
+    }
+    
+    /* Transition effects */
+    body, .card, .navbar, .bg-light {
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="#">Dark Mode Demo</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Services</a>
+          </li>
+        </ul>
+        <!-- Dark Mode Toggle Button -->
+        <div class="dark-mode-toggle">
+          <button class="btn" id="darkModeBtn">
+            <i class="fas fa-sun"></i>
+            <span class="ms-2">Light Mode</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container my-5">
+    <!-- Section 1 -->
+    <section class="mb-5">
+      <h2 class="mb-4">Welcome Section</h2>
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">Welcome to our website</h3>
+          <p class="card-text">This is the first section that will change appearance when you toggle dark mode. Try clicking the dark mode button in the navigation bar.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2 -->
+    <section class="mb-5">
+      <h2 class="mb-4">Features Section</h2>
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Feature One</h5>
+              <p class="card-text">This card will change its background and text color in dark mode.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Feature Two</h5>
+              <p class="card-text">Another card that will adapt to the dark mode theme.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Feature Three</h5>
+              <p class="card-text">The third card in this section also changes with the theme.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3 -->
+    <section class="mb-5">
+      <h2 class="mb-4">Content Section</h2>
+      <div class="bg-light p-4 rounded">
+        <h3>Important Information</h3>
+        <p>This is the third section with a light background that will change to a darker color in dark mode.</p>
+        <p>The text will also adapt to be more readable in the dark theme.</p>
+      </div>
+    </section>
+
+    <!-- Section 4 -->
+    <section class="mb-5">
+      <h2 class="mb-4">Contact Section</h2>
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">Get in Touch</h3>
+          <p class="card-text">This is the fourth section that will change appearance in dark mode.</p>
+          <button class="btn btn-primary">Contact Us</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Dark Mode Toggle Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get references to the button and icon
+      const darkModeBtn = document.getElementById('darkModeBtn');
+      const darkModeIcon = darkModeBtn.querySelector('i');
+      const darkModeText = darkModeBtn.querySelector('span');
+      
+      // Check for saved theme preference or use device preference
+      const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+      const currentTheme = localStorage.getItem('theme');
+      
+      // If the user previously selected dark mode
+      if (currentTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        updateButtonAppearance(true);
+      } else if (currentTheme === 'light') {
+        document.body.classList.remove('dark-mode');
+        updateButtonAppearance(false);
+      } else if (prefersDarkScheme.matches) {
+        // If the user hasn't set a preference but their device prefers dark mode
+        document.body.classList.add('dark-mode');
+        updateButtonAppearance(true);
+      }
+      
+      // Toggle dark mode on button click
+      darkModeBtn.addEventListener('click', function() {
+        // If dark mode is currently on, turn it off
+        if (document.body.classList.contains('dark-mode')) {
+          document.body.classList.remove('dark-mode');
+          localStorage.setItem('theme', 'light');
+          updateButtonAppearance(false);
+        } else {
+          // If dark mode is currently off, turn it on
+          document.body.classList.add('dark-mode');
+          localStorage.setItem('theme', 'dark');
+          updateButtonAppearance(true);
+        }
+      });
+      
+      // Function to update button appearance
+      function updateButtonAppearance(isDarkMode) {
+        if (isDarkMode) {
+          darkModeIcon.classList.remove('fa-sun');
+          darkModeIcon.classList.add('fa-moon');
+          darkModeText.textContent = 'Dark Mode';
+          darkModeBtn.classList.add('btn-outline-light');
+          darkModeBtn.classList.remove('btn-outline-dark');
+        } else {
+          darkModeIcon.classList.remove('fa-moon');
+          darkModeIcon.classList.add('fa-sun');
+          darkModeText.textContent = 'Light Mode'; 
+          darkModeBtn.classList.remove('btn-outline-light');
+          darkModeBtn.classList.add('btn-outline-dark');
+        }
+      }
+    });
+  </script>
+</body>
+</html>

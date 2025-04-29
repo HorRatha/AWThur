@@ -1,4 +1,5 @@
 
+
     // Initialize AOS Animation
     document.addEventListener('DOMContentLoaded', function() {
       AOS.init();
@@ -147,4 +148,61 @@
       });
     }
   });
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get references to the button and icon
+    const darkModeBtn = document.getElementById('darkModeBtn');
+    const darkModeIcon = darkModeBtn.querySelector('i');
+    const darkModeText = darkModeBtn.querySelector('span');
+    
+    // Check for saved theme preference or use device preference
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    const currentTheme = localStorage.getItem('theme');
+    
+    // If the user previously selected dark mode
+    if (currentTheme === 'dark') {
+      document.body.classList.add('dark-mode');
+      updateButtonAppearance(true);
+    } else if (currentTheme === 'light') {
+      document.body.classList.remove('dark-mode');
+      updateButtonAppearance(false);
+    } else if (prefersDarkScheme.matches) {
+      // If the user hasn't set a preference but their device prefers dark mode
+      document.body.classList.add('dark-mode');
+      updateButtonAppearance(true);
+    }
+    
+    // Toggle dark mode on button click
+    darkModeBtn.addEventListener('click', function() {
+      // If dark mode is currently on, turn it off
+      if (document.body.classList.contains('dark-mode')) {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+        updateButtonAppearance(false);
+      } else {
+        // If dark mode is currently off, turn it on
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        updateButtonAppearance(true);
+      }
+    });
+    
+    // Function to update button appearance
+    function updateButtonAppearance(isDarkMode) {
+      if (isDarkMode) {
+        darkModeIcon.classList.remove('fa-sun');
+        darkModeIcon.classList.add('fa-moon');
+        darkModeText.textContent = 'Light Mode'; // Changed to display the mode you'll switch TO
+        darkModeBtn.classList.add('btn-outline-light');
+        darkModeBtn.classList.remove('btn-outline-dark');
+      } else {
+        darkModeIcon.classList.remove('fa-moon');
+        darkModeIcon.classList.add('fa-sun');
+        darkModeText.textContent = 'Dark Mode'; // Changed to display the mode you'll switch TO
+        darkModeBtn.classList.remove('btn-outline-light');
+        darkModeBtn.classList.add('btn-outline-dark');
+      }
+    }
+  });
+
+  
 
